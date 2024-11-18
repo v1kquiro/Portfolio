@@ -43,6 +43,24 @@ const loadingInterval = setInterval(() => {
     progress += 1;
     loadingBar.style.width = `${progress}%`;
 
+
+    if (progress >= 35) {
+        clearInterval(loadingInterval);
+        loadingText.innerText = "Loading .exe files"
+        
+        console.log(progress)
+    }
+
+    if (progress >= 65) {
+        clearInterval(loadingInterval);
+        loadingText.innerText = "Uploading data"
+    }
+
+    if (progress >= 95) {
+        clearInterval(loadingInterval);
+        loadingText.innerText = "Downloading your info"
+    }
+
     if (progress >= 100) {
         clearInterval(loadingInterval);
         loadingText.innerText = "Access Approved";
@@ -57,24 +75,29 @@ const loadingInterval = setInterval(() => {
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-document.querySelector("h1").onmouseover = event => {
-    let iterations = 0;
+let interval = null;
 
-    const interval = setInterval(() => {
-        event.target.innerText = event.target.innerText.split("")
-            .map((letter, index) => {
-              if(index < iterations) {
-                return event.target.dataset.value[index];
-              }
-
-                return letters[Math.floor(Math.random() * 26)]
-            })
-            .join("");
-
-        if(iterations >= event.target.data.value.length){
-            clearInterval(interval);
+document.querySelector("h1").onmouseover = event => {  
+  let iteration = 0;
+  
+  clearInterval(interval);
+  
+  interval = setInterval(() => {
+    event.target.innerText = event.target.innerText
+      .split("")
+      .map((letter, index) => {
+        if(index < iteration) {
+          return event.target.dataset.value[index];
         }
-
-        iterations += 1 / 3;
-    }, 2);
+      
+        return letters[Math.floor(Math.random() * 26)]
+      })
+      .join("");
+    
+    if(iteration >= event.target.dataset.value.length){ 
+      clearInterval(interval);
+    }
+    
+    iteration += 1 / 3;
+  }, 30);
 }
